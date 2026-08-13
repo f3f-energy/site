@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F3F Gestão energética — Gestão Integrada de Projetos de Energia</title>
+    <title>F3F Gestão — Gestão Integrada de Projetos de Energia</title>
     <meta name="description" content="F3F Gestão coordena todo o seu projeto de energia — Mercado Livre, GD, Energia Solar, Eletropostos, BESS, Gestão Energética, Redes e Subestações — com um único responsável do início ao fim.">
-    
+    <meta name="version" content="1.2.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -42,7 +43,7 @@
         .btn-nav { padding: 8px 20px; border-radius: 30px; background: rgba(230, 200, 79, 0.15); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; font-size: 0.9rem; transition: all 0.3s; }
         .btn-nav:hover { background: var(--accent); color: var(--bg); }
 
-        /* SEÇÕES TELA CHEIA (FULLSCREEN) */
+        /* SEÇÕES TELA CHEIA */
         .screen-section {
             min-height: 100vh;
             width: 100vw;
@@ -54,7 +55,7 @@
             position: relative;
         }
 
-        /* HERO EXATAMENTE COMO SOLICITADO (Linha 1: Direita, Linha 2: Centro, Linha 3: Esquerda) */
+        /* HERO */
         .hero { 
             background: radial-gradient(circle at 50% 20%, rgba(0, 136, 207, 0.15), transparent 60%), linear-gradient(rgba(2, 8, 23, 0.85), rgba(2, 8, 23, 0.98)), url("https://images.unsplash.com/photo-1508514177221-188b1cf16e9d") center/cover no-repeat; 
         }
@@ -88,13 +89,12 @@
         .section-head h2 { font-size: clamp(1.8rem, 3.2vw, 2.3rem); margin-top: 6px; line-height: 1.2; }
         .section-head p { color: var(--text-dim); margin-top: 10px; font-size: 1rem; }
 
-        /* FUNDOS COM IMAGENS IMERSIVAS POR TELA */
         .bg-diferencial { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
         .bg-portfolio { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1509391365360-86922ae4fca0?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
         .bg-como-funciona { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
         .bg-contato { background: linear-gradient(rgba(2, 8, 23, 0.88), rgba(1, 4, 10, 0.98)), url('https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; text-align: center; }
 
-        /* PROBLEMA / CARDS (Ícones reduzidos pela metade conforme pedido) */
+        /* PROBLEMA / CARDS */
         .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
         .problem-card { background: var(--bg-alt); padding: 30px; border-radius: var(--radius); border: 1px solid var(--line); }
         .problem-card.antes { border-top: 4px solid #e0665c; }
@@ -107,7 +107,7 @@
         .problem-card li { color: var(--text-dim); font-size: 0.95rem; padding: 8px 0 8px 24px; position: relative; border-bottom: 1px solid rgba(23, 52, 93, 0.4); display: flex; align-items: center; }
         .problem-card li svg { position: absolute; left: 0; width: 12px; height: 12px; }
 
-        /* PORTFÓLIO / SOLUÇÕES (Ícones maiores conforme pedido) */
+        /* PORTFÓLIO / SOLUÇÕES */
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%; }
         .svc-card { background: rgba(11, 30, 59, 0.85); backdrop-filter: blur(5px); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
         .svc-card:hover { transform: translateY(-3px); border-color: var(--accent); }
@@ -120,7 +120,7 @@
         .svc-link { font-size: 0.85rem; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
         .svc-link:hover { text-decoration: underline; }
 
-        /* COMO FUNCIONA COM ÍCONES */
+        /* COMO FUNCIONA */
         .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; width: 100%; }
         .flow-step { background: var(--bg-alt); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); }
         .flow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -143,15 +143,178 @@
         .wsp-float { background-color: var(--whatsapp-color); color: #fff; }
         .top-float { background-color: var(--card-bg); border: 1px solid var(--line); color: var(--accent); }
         .wsp-float:hover, .top-float:hover { transform: scale(1.1); }
-        
-        /* FOOTER */
-        footer { padding: 30px 24px; border-top: 1px solid var(--line); background: #01040a; font-size: 0.85rem; color: var(--text-dim); text-align: center; }
-        .footer-wrap { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .footer-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .back-to-top-link { color: var(--accent); font-weight: 600; text-decoration: underline; cursor: pointer; transition: opacity 0.2s; }
-        .back-to-top-link:hover { opacity: 0.8; }
 
-        /* PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS (index_mob) CORRIGIDA COM FIXED E FULL COVER */
+        /* BOTÃO ADMIN ESCONDIDO */
+        .admin-float {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 1000;
+            background: rgba(2, 8, 23, 0.5);
+            border: 1px solid rgba(23, 52, 93, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.4;
+        }
+        .admin-float:hover {
+            opacity: 1;
+            border-color: #6C3CE1;
+            background: rgba(108, 60, 225, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* MODAL ADMINISTRATIVO */
+        .admin-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-modal-overlay.active { display: flex; }
+        .admin-modal {
+            background: var(--bg-alt);
+            border: 2px solid #6C3CE1;
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 750px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .admin-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+        }
+        .admin-modal .modal-header h2 {
+            color: var(--accent);
+            font-size: 18px;
+        }
+        .admin-modal .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .admin-modal .modal-close:hover { color: #ef4444; }
+        .admin-modal .login-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .admin-modal .login-area input {
+            flex: 1;
+            padding: 10px 14px;
+            background: #07172f;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+        .admin-modal .login-area input:focus { border-color: #6C3CE1; }
+        .admin-modal .login-area .btn-login {
+            padding: 10px 24px;
+            background: #6C3CE1;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .admin-modal .login-area .btn-login:hover { background: #8B5CF6; }
+        .admin-modal .status-login {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+        }
+        .admin-modal .status-login .ok { color: #34D399; }
+        .admin-modal .status-login .erro { color: #F87171; }
+
+        .admin-modal .grid-precos {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .admin-modal .item-preco {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            background: #07172f;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+        }
+        .admin-modal .item-preco .nome { color: #fff; font-size: 13px; font-weight: 600; }
+        .admin-modal .item-preco .codigo { color: var(--text-dim); font-size: 10px; font-family: monospace; }
+        .admin-modal .item-preco .campo { display: flex; flex-direction: column; gap: 2px; }
+        .admin-modal .item-preco .campo label { font-size: 10px; color: var(--text-dim); }
+        .admin-modal .item-preco .campo input {
+            background: #020817;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            color: #fff;
+            padding: 4px 8px;
+            font-size: 13px;
+            width: 100%;
+            outline: none;
+        }
+        .admin-modal .item-preco .campo input:focus { border-color: #6C3CE1; }
+        .admin-modal .btn-salvar-admin {
+            width: 100%;
+            padding: 12px;
+            background: #6C3CE1;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .admin-modal .btn-salvar-admin:hover { background: #8B5CF6; transform: translateY(-2px); }
+        .admin-modal .btn-fechar-admin {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--text-dim);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+        .admin-modal .btn-fechar-admin:hover { border-color: var(--text); color: var(--text); }
+
+        /* ============================================ */
+        /* PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS */
+        /* ============================================ */
         .page-mob { display: none; background: var(--bg); position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; overflow-y: auto; }
         .page-mob.active { display: block; }
         
@@ -171,23 +334,87 @@
         .mob-card-highlight p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px; }
         .mob-img-box img { width: 100%; border-radius: 20px; border: 1px solid var(--line); object-fit: cover; max-height: 380px; }
 
-        .mob-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .mob-subcard { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 16px; padding: 30px; }
-        .mob-subcard h4 { font-size: 1.2rem; color: var(--accent); margin-bottom: 12px; }
-        .mob-subcard p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
+        /* CARDS CARREGADORES - DENTRO DA PÁGINA MOB */
+        .carregadores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%; }
+        .svc-card-mob { background: rgba(11, 30, 59, 0.85); backdrop-filter: blur(5px); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); transition: transform 0.3s; cursor: pointer; }
+        .svc-card-mob:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .svc-card-mob .preco { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-top: 8px; filter: blur(8px); user-select: none; cursor: default; transition: filter 0.3s; }
+        .svc-card-mob .consulte { font-size: 0.7rem; color: var(--text-dim); margin-top: 2px; }
+
+        /* FORMULÁRIO - DENTRO DA PÁGINA MOB */
+        .form-box-mob { margin-top: 40px; background: var(--bg-alt); padding: 35px; border-radius: var(--radius); border: 2px solid var(--accent); }
+        .form-box-mob h3 { font-size: 1.5rem; margin-bottom: 8px; color: #fff; text-align: center; }
+        .form-box-mob .sub { color: var(--text-dim); text-align: center; margin-bottom: 24px; font-size: 1.05rem; }
+        .form-grid-mob { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group-mob { display: flex; flex-direction: column; }
+        .form-group-mob label { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 4px; }
+        .form-group-mob input, .form-group-mob select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--line); background: #020817; color: #fff; font-size: 1rem; outline: none; }
+        .form-group-mob input:focus, .form-group-mob select:focus { border-color: var(--accent); }
+
+        .checkbox-especialista-mob { margin-top: 20px; display: flex; gap: 12px; background: rgba(108, 60, 225, 0.08); padding: 16px; border-radius: 12px; border: 1px solid rgba(108, 60, 225, 0.3); align-items: flex-start; }
+        .checkbox-especialista-mob input { width: 20px; height: 20px; margin-top: 2px; accent-color: #6C3CE1; flex-shrink: 0; }
+        .checkbox-especialista-mob label { font-weight: 600; color: #fff; cursor: pointer; font-size: 1rem; }
+        .checkbox-especialista-mob .desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 4px; }
+        .checkbox-especialista-mob .desc strong { color: var(--accent); }
+
+        .btn-enviar-mob { margin-top: 24px; width: 100%; padding: 16px; background: var(--whatsapp-color); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; }
+        .btn-enviar-mob:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4); }
+        .btn-enviar-mob:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .form-status-mob { margin-top: 16px; font-size: 0.95rem; text-align: center; display: none; }
+        .form-status-mob.sucesso { color: #34D399; }
+        .form-status-mob.erro { color: #F87171; }
 
         .mob-footer { padding: 30px 24px; border-top: 1px solid var(--line); background: #01040a; font-size: 0.85rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; max-width: 100%; }
         .mob-footer-wrap { max-width: 1140px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
+        /* FOOTER */
+        footer { padding: 30px 24px; border-top: 1px solid var(--line); background: #01040a; font-size: 0.85rem; color: var(--text-dim); text-align: center; }
+        .footer-wrap { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .footer-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .back-to-top-link { color: var(--accent); font-weight: 600; text-decoration: underline; cursor: pointer; transition: opacity 0.2s; }
+        .back-to-top-link:hover { opacity: 0.8; }
 
         @media (max-width: 820px) { 
             nav .nav-links { display: none; } 
             .mob-grid-main { grid-template-columns: 1fr; }
             .screen-section { height: auto; min-height: 100vh; padding: 120px 20px 80px 20px; } 
-            .hero-line-1, .hero-line-2, .hero-line-3 { text-align: left; } 
+            .hero-line-1, .hero-line-2, .hero-line-3 { text-align: left; }
+            .form-grid-mob { grid-template-columns: 1fr; }
+            .admin-modal .item-preco { grid-template-columns: 1fr; gap: 6px; }
+        }
+        @media (max-width: 480px) {
+            .admin-modal .item-preco { grid-template-columns: 1fr; gap: 6px; }
         }
     </style>
 </head>
 <body id="topo">
+
+    <!-- BOTÃO ADMIN ESCONDIDO -->
+    <div class="admin-float" id="adminFloat" title="Administrador">⚙️</div>
+
+    <!-- MODAL ADMINISTRATIVO -->
+    <div class="admin-modal-overlay" id="adminModal">
+        <div class="admin-modal">
+            <div class="modal-header">
+                <h2>⚙️ Dashboard Administrativo</h2>
+                <button class="modal-close" id="adminModalClose">✕</button>
+            </div>
+            <div id="adminLoginArea">
+                <div class="login-area">
+                    <input type="password" id="adminSenha" placeholder="Digite a senha de acesso" />
+                    <button class="btn-login" id="adminLoginBtn">Entrar</button>
+                </div>
+                <div class="status-login" id="adminStatus">🔒 Digite a senha para acessar o painel</div>
+            </div>
+            <div id="adminConfigArea" style="display:none;">
+                <div style="color: var(--text-dim); font-size: 13px; margin-bottom: 16px;">✅ Acesso liberado. Ajuste os preços e percentuais abaixo:</div>
+                <div class="grid-precos" id="adminGridPrecos"></div>
+                <button class="btn-salvar-admin" id="adminSalvarBtn">💾 Salvar Alterações e Fechar</button>
+                <button class="btn-fechar-admin" id="adminFecharBtn">✕ Fechar sem Salvar</button>
+            </div>
+        </div>
+    </div>
 
     <div class="float-buttons">
         <a href="https://wa.me/5562992892170?text=Olá!%20Gostaria%20de%20falar%20com%20a%20F3F%20Gestão%20sobre%20meu%20projeto." class="wsp-float" target="_blank" title="Falar no WhatsApp">
@@ -198,61 +425,78 @@
         </a>
     </div>
 
-    <!-- PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS (index_mob) -->
+    <!-- ============================================ -->
+    <!-- PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS  -->
+    <!-- ============================================ -->
     <div class="page-mob" id="paginaMobilidade">
         <header class="mob-header">
             <div class="mob-nav">
                 <div class="logo"><span class="logo-dot"></span>F3F <span>Gestão</span></div>
-                <button class="btn-voltar-inicio" onclick="fecharPaginaMobilidade()">
-                    ← Voltar ao Início
-                </button>
+                <button class="btn-voltar-inicio" onclick="fecharPaginaMobilidade()">← Voltar ao Início</button>
             </div>
         </header>
 
         <section class="mob-hero">
-            <div class="eyebrow" style="justify-content: center;">Parceria Oficial com as melhores marcas</div>
+            <div class="eyebrow" style="justify-content: center;">Parceria Oficial WEG — WEMOB</div>
             <h1>Infraestrutura de Recarga Veicular Avançada</h1>
             <p>Soluções completas em mobilidade elétrica, desde carregadores residenciais e comerciais até estações ultrarrápidas de alta potência para frotas e rodovias.</p>
-            <a class="btn btn-wsp" href="https://wa.me/5562992892170?text=Olá!%20Quero%20solicitar%20um%20projeto%20de%20Recarga%20Veicular%20com%20a%20F3F." target="_blank">Solicitar Projeto com a F3F</a>
         </section>
 
         <div class="mob-content">
+
             <div class="mob-grid-main">
                 <div class="mob-card-highlight">
-                    <h3>Gestão e Tecnologia com o melhor da Engenharia</h3>
-                    <p>Como parceiros oficiais de <strong>AS MELHORES MARCAS</strong>, entregamos linhas completas como <strong>WEMOB</strong>, reconhecida mundialmente pela robustez, segurança e inteligência em gestão de energia.</p>
+                    <h3>Tecnologia WEG com Engenharia F3F</h3>
+                    <p>Como parceiros oficiais da <strong>WEG</strong>, entregamos a linha completa <strong>WEMOB</strong>, reconhecida mundialmente pela robustez, segurança e inteligência em gestão de energia.</p>
                     <p>Nós cuidamos de toda a cadeia: dimensionamento elétrico, estudo de impacto na subestação, infraestrutura civil e cabeamento, instalação dos equipamentos e configuração dos sistemas de controle de acesso e tarifação.</p>
+                    <p><strong style="color:var(--accent);">Selecione um carregador abaixo e solicite sua proposta:</strong></p>
                 </div>
                 <div class="mob-img-box">
                     <img src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1000&auto=format&fit=crop" alt="Carregamento de Veículo Elétrico">
                 </div>
             </div>
 
-            <div class="mob-cards-grid">
-                <div class="mob-subcard">
-                    <h4>WEMOB Wall & Parking</h4>
-                    <p>Ideais para residências, condomínios e vagas corporativas. Sistema inteligente com controle de acesso via cartão RFID ou aplicativo e balanceamento de carga.</p>
+            <!-- CARDS CARREGADORES -->
+            <div class="carregadores-grid" id="carregadoresGrid"></div>
+
+            <!-- FORMULÁRIO -->
+            <div class="form-box-mob" id="formBoxMob">
+                <h3>📩 Receba sua Proposta Completa</h3>
+                <p class="sub">Preencha seus dados abaixo e receba a <strong style="color:var(--accent);">proposta com os valores</strong> no seu e-mail.</p>
+
+                <div class="form-grid-mob">
+                    <div class="form-group-mob"><label>Nome Completo *</label><input type="text" id="formNome" placeholder="Seu nome completo" /></div>
+                    <div class="form-group-mob"><label>E-mail *</label><input type="email" id="formEmail" placeholder="seu@email.com" /></div>
+                    <div class="form-group-mob"><label>Telefone *</label><input type="tel" id="formTelefone" placeholder="(62) 99999-9999" /></div>
+                    <div class="form-group-mob"><label>Empresa</label><input type="text" id="formEmpresa" placeholder="Nome da sua empresa" /></div>
+                    <div class="form-group-mob" style="grid-column:1/-1;"><label>Carregador de Interesse *</label><select id="formCarregador"><option value="">Selecione...</option></select></div>
                 </div>
-                <div class="mob-subcard">
-                    <h4>WEMOB Station</h4>
-                    <p>Desenvolvidos para comércios, estacionamentos públicos e frotas. Alta durabilidade, resistência a intempéries e interface amigável para o motorista.</p>
+
+                <div class="checkbox-especialista-mob">
+                    <input type="checkbox" id="formEspecialista" />
+                    <div>
+                        <label for="formEspecialista">☑️ Quero assinar o contrato / falar com um especialista agora</label>
+                        <div class="desc">Marque se já está pronto para fechar ou quer consultoria. <strong>Entramos em contato em até 2 horas!</strong></div>
+                    </div>
                 </div>
-                <div class="mob-subcard">
-                    <h4>WEMOB Fast & Ultra</h4>
-                    <p>Estações de recarga rápida e ultrarrápida em corrente contínua (DC) para postos rodoviários e eletrificação pesada de frotas de ônibus e caminhões.</p>
-                </div>
+
+                <button class="btn-enviar-mob" id="btnEnviar">📩 Enviar e Receber Proposta</button>
+                <div class="form-status-mob" id="formStatus"></div>
             </div>
+
         </div>
 
         <footer class="mob-footer">
             <div class="mob-footer-wrap">
-                <div><strong>F3F Gestão energética</strong> — Projetos e soluções de Energia <a class="back-to-top-link" href="#" onclick="fecharPaginaMobilidade(); return false;" style="margin-left: 15px;">⚡ (Voltar à Página Principal)</a></div>
-                <div>©2026 F3F Gestão energética. Todos os direitos reservados.</div>
+                <div><strong>F3F Gestão</strong> — Projetos de Energia</div>
+                <div>©2026 F3F Gestão. Todos os direitos reservados.</div>
             </div>
         </footer>
     </div>
 
-    <!-- SITE PRINCIPAL -->
+    <!-- ============================================ -->
+    <!-- SITE PRINCIPAL                               -->
+    <!-- ============================================ -->
     <header>
         <nav>
             <div class="logo"><span class="logo-dot"></span>F3F <span>Gestão</span></div>
@@ -266,7 +510,7 @@
         </nav>
     </header>
 
-    <!-- TELA 1: HERO EXATA -->
+    <!-- TELA 1: HERO -->
     <section class="screen-section hero">
         <div class="wrap">
             <div class="eyebrow">Gestão Integrada de Projetos de Energia</div>
@@ -275,7 +519,7 @@
                 <span class="hero-line-2">Vários especialistas.</span>
                 <span class="hero-line-3">Um só responsável.</span>
             </h1>
-            <p class="sub">A <strong>F3F Gestão energética</strong> coordena todo o seu projeto elétrico — da geração solar ao Mercado Livre de Energia — com um único ponto de contato do diagnóstico à entrega.</p>
+            <p class="sub">A <strong>F3F Gestão</strong> coordena todo o seu projeto elétrico — da geração solar ao Mercado Livre de Energia — com um único ponto de contato do diagnóstico à entrega.</p>
             <div class="cta-group">
                 <a class="btn btn-wsp" href="https://wa.me/5562992892170?text=Olá!%20Quero%20fazer%20um%20diagnóstico." target="_blank">Falar com a F3F Gestão</a>
                 <a class="btn btn-ghost" href="#portfolio">Conhecer Soluções</a>
@@ -283,7 +527,7 @@
         </div>
     </section>
 
-    <!-- TELA 2: DIFERENCIAL (Ícones reduzidos pela metade) -->
+    <!-- TELA 2: DIFERENCIAL -->
     <section id="diferencial" class="screen-section bg-diferencial">
         <div class="wrap">
             <div class="section-head">
@@ -317,7 +561,7 @@
         </div>
     </section>
 
-    <!-- TELA 3: SOLUÇÕES / PORTFÓLIO (Ícones maiores) -->
+    <!-- TELA 3: SOLUÇÕES / PORTFÓLIO -->
     <section id="portfolio" class="screen-section bg-portfolio">
         <div class="wrap">
             <div class="section-head">
@@ -352,14 +596,15 @@
                 <div class="svc-card">
                     <div>
                         <div class="svc-header"><span class="icon-tag">MOBILIDADE</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div></div>
-                        <h3>Eletropostos</h3><p>Infraestrutura completa de recarga para veículos elétricos (EV).</p>
+                        <h3>Eletropostos</h3>
+                        <p>Infraestrutura completa de recarga para veículos elétricos (EV).</p>
                     </div>
                     <a class="svc-link" onclick="abrirPaginaMobilidade(event)">Ver detalhes da Solução →</a>
                 </div>
                 <div class="svc-card">
                     <div>
                         <div class="svc-header"><span class="icon-tag">GESTÃO</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div></div>
-                        <h3>Gestão Energética</h3><p>Monitoramento e estratégias contínuas para eficiência energética para que você cuide do seu core business.</p>
+                        <h3>Gestão Energética</h3><p>Monitoramento e estratégias contínuas para eficiência energética.</p>
                     </div>
                 </div>
             </div>
@@ -371,7 +616,7 @@
         <div class="wrap">
             <div class="section-head">
                 <div class="eyebrow">Como Funciona</div>
-                <h2>Você foca no seu negócio, nós na solução da sua energia.</h2>
+                <h2>Você foca no seu negócio, nós na energia.</h2>
             </div>
             <div class="flow-grid">
                 <div class="flow-step">
@@ -380,15 +625,15 @@
                 </div>
                 <div class="flow-step">
                     <div class="flow-header"><span class="step-num">02. DIRECIONAMENTO</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
-                    <h4>Parceiros Certos</h4><p>Seleção dos especialistas mais adequados para o seu projeto.</p>
+                    <h4>Parceiros Certos</h4><p>Seleção dos especialistas mais adequados para o projeto.</p>
                 </div>
                 <div class="flow-step">
                     <div class="flow-header"><span class="step-num">03. COORDENAÇÃO</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div></div>
-                    <h4>Gestão Unificada</h4><p>Acompanhamento rigoroso de prazos, integração de fornecedores e acompanhamento junto aos órgãos competentes.</p>
+                    <h4>Gestão Unificada</h4><p>Acompanhamento rigoroso de prazos e integração de fornecedores.</p>
                 </div>
                 <div class="flow-step">
                     <div class="flow-header"><span class="step-num">04. ENTREGA</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
-                    <h4>Resultado</h4><p>Projeto entregue com a garantia de um único responsável técnico, com entrega técnica garantida.</p>
+                    <h4>Resultado</h4><p>Projeto entregue com a garantia de um único responsável técnico.</p>
                 </div>
             </div>
         </div>
@@ -409,22 +654,337 @@
     <footer>
         <div class="footer-wrap">
             <div class="footer-left">
-                <div><strong>F3F Gestão energética</strong> — Projetos e soluções de Energia</div>
+                <div><strong>F3F Gestão</strong> — Projetos de Energia</div>
                 <a class="back-to-top-link" href="#topo">Voltar ao topo ↑</a>
             </div>
-            <div>©2026 F3F Gestão energética. Todos os direitos reservados.</div>
+            <div>©2026 F3F Gestão. Todos os direitos reservados.</div>
         </div>
     </footer>
 
     <script>
+        // ============================================
+        // SUPABASE CONFIG
+        // ============================================
+        const SUPA_URL = "https://nmzifhqivuhdfwlelmxp.supabase.co";
+        const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5temlmaHFpdnVoZGZ3bGVsbXhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTgzNzgsImV4cCI6MjA4OTY5NDM3OH0.AFi43M_euM7iztzOyCamh1HGen3SiBUXQtfknBoWTcc";
+        const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+        // ============================================
+        // ABRIR/FECHAR PÁGINA MOBILIDADE
+        // ============================================
         function abrirPaginaMobilidade(e) {
             e.preventDefault();
             document.getElementById('paginaMobilidade').classList.add('active');
+            inicializarMob();
         }
+
         function fecharPaginaMobilidade() {
             document.getElementById('paginaMobilidade').classList.remove('active');
         }
-    </script>
 
+        // ============================================
+        // CARREGADORES
+        // ============================================
+        const CARREGADORES = [
+            { id: 'station_30', nome: 'WEMOB STATION 30kW', codigo: 'WEMOB-S-030-W-E-4G-R-H-1CS2', preco: 85977.54 },
+            { id: 'station_40', nome: 'WEMOB STATION 40kW', codigo: 'WEMOB-S-040-W-E-4G-R-H-1CS2', preco: 96086.47 },
+            { id: 'station_80', nome: 'WEMOB STATION 80kW DUAL', codigo: 'WEMOB-S-080-W-E-4G-R-H-2CS2', preco: 192905.90 },
+            { id: 'station_120', nome: 'WEMOB STATION 120kW DUAL', codigo: 'WEMOB-S-120-W-E-4G-R-H-2CS2', preco: 271610.34 },
+            { id: 'station_160', nome: 'WEMOB STATION 160kW DUAL', codigo: 'WEMOB-S-160-W-E-4G-R-H-2CS2', preco: 263720.89 },
+            { id: 'station_180', nome: 'WEMOB STATION 180kW DUAL', codigo: 'WEMOB-S-180-W-E-4G-R-H-2CS2', preco: 295434.13 },
+            { id: 'station_240', nome: 'WEMOB STATION 240kW DUAL', codigo: 'WEMOB-S-240-W-E-4G-R-H-2CS2', preco: 388617.56 }
+        ];
+
+        // ============================================
+        // SESSION ID
+        // ============================================
+        let sessionId = sessionStorage.getItem('f3f_session_id') || 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+        sessionStorage.setItem('f3f_session_id', sessionId);
+        let leadId = sessionStorage.getItem('f3f_lead_id') || null;
+
+        // ============================================
+        // REGISTRAR VISUALIZAÇÃO
+        // ============================================
+        async function registrarVisualizacaoMob() {
+            if (leadId) return;
+            try {
+                const { data, error } = await sb.from('landing_page_leads').insert({
+                    nome: null, email: null, telefone: null, empresa: null,
+                    carregador: null, carregador_id: null, status: 'visualizou',
+                    user_agent: navigator.userAgent, session_id: sessionId
+                }).select('id').single();
+                if (error) { console.error('Erro:', error); return; }
+                leadId = data.id;
+                sessionStorage.setItem('f3f_lead_id', leadId);
+            } catch (e) { console.error('Erro:', e); }
+        }
+
+        // ============================================
+        // ATUALIZAR LEAD
+        // ============================================
+        async function atualizarLeadMob(dados) {
+            const id = leadId || sessionStorage.getItem('f3f_lead_id');
+            if (!id) return;
+            try {
+                await sb.from('landing_page_leads').update(dados).eq('id', id);
+            } catch (e) { console.error('Erro:', e); }
+        }
+
+        // ============================================
+        // GERAR CARDS
+        // ============================================
+        function gerarCardsMob() {
+            const grid = document.getElementById('carregadoresGrid');
+            if (!grid) return;
+            let html = '';
+            CARREGADORES.forEach(c => {
+                const preco = c.preco.toFixed(2).replace('.', ',');
+                html += `
+                    <div class="svc-card-mob" onclick="selecionarCarregadorMob('${c.id}')">
+                        <div>
+                            <div class="svc-header">
+                                <span class="icon-tag">WEMOB</span>
+                                <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>
+                            </div>
+                            <h3>${c.nome}</h3>
+                            <div style="font-size:0.8rem; color:var(--text-dim); font-family:monospace;">${c.codigo}</div>
+                            <div class="preco">R$ ${preco}</div>
+                            <div class="consulte">🔒 Preço disponível mediante solicitação</div>
+                        </div>
+                        <div style="color:var(--accent);font-weight:600;margin-top:12px;">🔌 Selecionar →</div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // ============================================
+        // SELECIONAR CARREGADOR
+        // ============================================
+        let carregadorSelecionado = null;
+        function selecionarCarregadorMob(id) {
+            const c = CARREGADORES.find(x => x.id === id);
+            if (!c) return;
+            carregadorSelecionado = c;
+            const select = document.getElementById('formCarregador');
+            if (select) select.value = id;
+            document.getElementById('formBoxMob').scrollIntoView({ behavior: 'smooth' });
+            atualizarLeadMob({ carregador: c.nome, carregador_id: c.id, status: 'preencheu_nao_enviou' });
+        }
+
+        // ============================================
+        // POPULAR SELECT
+        // ============================================
+        function popularSelectMob() {
+            const select = document.getElementById('formCarregador');
+            if (!select) return;
+            CARREGADORES.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.nome;
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================
+        // VALIDAÇÕES
+        // ============================================
+        function validarEmailMob(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+        function validarTelefoneMob(t) { return /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/.test(t); }
+        function validarNomeMob(n) { return n.trim().length >= 3 && n.trim().split(' ').length >= 2; }
+
+        // ============================================
+        // ENVIAR SOLICITAÇÃO
+        // ============================================
+        async function enviarSolicitacaoMob() {
+            const nome = document.getElementById('formNome').value.trim();
+            const email = document.getElementById('formEmail').value.trim();
+            const telefone = document.getElementById('formTelefone').value.trim();
+            const empresa = document.getElementById('formEmpresa').value.trim();
+            const carregadorId = document.getElementById('formCarregador').value;
+            const querEspecialista = document.getElementById('formEspecialista').checked;
+            const statusDiv = document.getElementById('formStatus');
+            statusDiv.style.display = 'block';
+
+            if (!validarNomeMob(nome)) { statusDiv.textContent = '❌ Digite seu nome completo.'; statusDiv.className = 'form-status-mob erro'; return; }
+            if (!validarEmailMob(email)) { statusDiv.textContent = '❌ E-mail inválido.'; statusDiv.className = 'form-status-mob erro'; return; }
+            if (!validarTelefoneMob(telefone)) { statusDiv.textContent = '❌ Telefone inválido.'; statusDiv.className = 'form-status-mob erro'; return; }
+            if (!carregadorId) { statusDiv.textContent = '❌ Selecione um carregador.'; statusDiv.className = 'form-status-mob erro'; return; }
+
+            const carregador = CARREGADORES.find(c => c.id === carregadorId);
+            if (!carregador) { statusDiv.textContent = '❌ Carregador não encontrado.'; statusDiv.className = 'form-status-mob erro'; return; }
+
+            await atualizarLeadMob({ nome, email, telefone, empresa: empresa || null, carregador: carregador.nome, carregador_id: carregador.id });
+
+            if (querEspecialista) {
+                await atualizarLeadMob({ status: 'pediu_especialista' });
+                try {
+                    await sb.from('leads').insert({
+                        name: nome, email, phone1: telefone, company: empresa || null,
+                        status: 'pediu_especialista', product: carregador.nome,
+                        history: `Lead qualificado via landing page. Carregador: ${carregador.nome}.`
+                    });
+                } catch (e) { console.error(e); }
+                const msg = `🔔 NOVO LEAD QUALIFICADO!\n\n📌 Nome: ${nome}\n📧 Email: ${email}\n📞 Telefone: ${telefone}\n⚡ Carregador: ${carregador.nome}\n\n👉 https://wa.me/5562992892170?text=Olá%20${encodeURIComponent(nome)}!`;
+                window.open(`https://wa.me/5562992892170?text=${encodeURIComponent(msg)}`, '_blank');
+                window.open(`mailto:f3f.gestao@gmail.com?subject=🔔%20NOVO%20LEAD%20QUALIFICADO&body=${encodeURIComponent(msg)}`, '_blank');
+                statusDiv.textContent = '✅ Solicitação enviada! Entraremos em contato em até 2 horas.';
+                statusDiv.className = 'form-status-mob sucesso';
+                document.getElementById('btnEnviar').disabled = true;
+                document.getElementById('btnEnviar').textContent = '✅ Enviado!';
+                return;
+            }
+
+            await atualizarLeadMob({ status: 'pediu_proposta' });
+            const preco = carregador.preco.toFixed(2).replace('.', ',');
+            const proposta = `📄 PROPOSTA COMERCIAL - F3F GESTÃO\n\nCliente: ${nome}\nEmpresa: ${empresa || 'N/I'}\nE-mail: ${email}\nTelefone: ${telefone}\n\n⚡ CARRREGADOR: ${carregador.nome}\n💰 VALOR: R$ ${preco}\n\n📌 Próximos passos: Responda este e-mail para confirmar interesse.\n\n---\nF3F Gestão - Projetos de Energia\n📞 (62) 99289-2170 | 📧 f3f.gestao@gmail.com`;
+            window.open(`mailto:${email}?subject=Proposta%20Comercial%20-%20F3F%20Gestão%20(${carregador.nome})&body=${encodeURIComponent(proposta)}`, '_blank');
+            statusDiv.textContent = '✅ Proposta enviada para seu e-mail! Verifique sua caixa de entrada.';
+            statusDiv.className = 'form-status-mob sucesso';
+            document.getElementById('btnEnviar').disabled = true;
+            document.getElementById('btnEnviar').textContent = '✅ Proposta Enviada!';
+        }
+
+        // ============================================
+        // INICIALIZAR MOBILIDADE
+        // ============================================
+        function inicializarMob() {
+            registrarVisualizacaoMob();
+            gerarCardsMob();
+            popularSelectMob();
+
+            ['formNome', 'formEmail', 'formTelefone', 'formEmpresa'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('input', function() {
+                    const campo = this.id.replace('form', '').toLowerCase();
+                    if (this.value.length > 2) {
+                        const dados = {};
+                        dados[campo] = this.value;
+                        dados.status = 'preencheu_nao_enviou';
+                        atualizarLeadMob(dados);
+                    }
+                });
+            });
+
+            document.getElementById('formTelefone').addEventListener('input', function() {
+                let val = this.value.replace(/\D/g, '');
+                if (val.length > 2) { val = '(' + val.substring(0, 2) + ') ' + val.substring(2); }
+                if (val.length > 10) { val = val.substring(0, 10) + '-' + val.substring(10); }
+                this.value = val;
+            });
+
+            document.getElementById('formCarregador').addEventListener('change', function() {
+                const c = CARREGADORES.find(x => x.id === this.value);
+                if (c) { carregadorSelecionado = c; atualizarLeadMob({ carregador: c.nome, carregador_id: c.id, status: 'preencheu_nao_enviou' }); }
+            });
+
+            document.getElementById('btnEnviar').addEventListener('click', enviarSolicitacaoMob);
+        }
+
+        // ============================================
+        // ADMIN MODAL
+        // ============================================
+        const adminFloat = document.getElementById('adminFloat');
+        const adminModal = document.getElementById('adminModal');
+        const adminModalClose = document.getElementById('adminModalClose');
+        const adminFecharBtn = document.getElementById('adminFecharBtn');
+        const adminLoginArea = document.getElementById('adminLoginArea');
+        const adminConfigArea = document.getElementById('adminConfigArea');
+        const adminSenha = document.getElementById('adminSenha');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminStatus = document.getElementById('adminStatus');
+        const adminGridPrecos = document.getElementById('adminGridPrecos');
+        const adminSalvarBtn = document.getElementById('adminSalvarBtn');
+
+        function getPrecosSalvos() {
+            const saved = localStorage.getItem('precos_carregadores');
+            if (saved) { try { return JSON.parse(saved); } catch(e) {} }
+            return {};
+        }
+
+        function salvarPrecos(precos) {
+            localStorage.setItem('precos_carregadores', JSON.stringify(precos));
+        }
+
+        let adminLogado = false;
+
+        adminFloat.addEventListener('click', () => {
+            adminModal.classList.add('active');
+            if (!adminLogado) {
+                adminLoginArea.style.display = 'block';
+                adminConfigArea.style.display = 'none';
+                adminStatus.innerHTML = '🔒 Digite a senha para acessar o painel';
+                adminStatus.className = 'status-login';
+                adminSenha.value = '';
+            } else {
+                adminLoginArea.style.display = 'none';
+                adminConfigArea.style.display = 'block';
+                carregarDadosAdmin();
+            }
+        });
+
+        function fecharModalAdmin() {
+            adminModal.classList.remove('active');
+        }
+
+        adminModalClose.addEventListener('click', fecharModalAdmin);
+        adminFecharBtn.addEventListener('click', fecharModalAdmin);
+        adminModal.addEventListener('click', (e) => { if (e.target === adminModal) fecharModalAdmin(); });
+
+        adminLoginBtn.addEventListener('click', () => {
+            const senha = adminSenha.value;
+            if (senha === 'admin123') {
+                adminLogado = true;
+                adminLoginArea.style.display = 'none';
+                adminConfigArea.style.display = 'block';
+                adminStatus.innerHTML = '✅ Acesso liberado!';
+                adminStatus.className = 'status-login ok';
+                carregarDadosAdmin();
+            } else {
+                adminStatus.innerHTML = '❌ Senha incorreta! Tente novamente.';
+                adminStatus.className = 'status-login erro';
+            }
+        });
+
+        adminSenha.addEventListener('keydown', (e) => { if (e.key === 'Enter') adminLoginBtn.click(); });
+
+        function carregarDadosAdmin() {
+            const precosSalvos = getPrecosSalvos();
+            let html = '';
+            CARREGADORES.forEach(c => {
+                const preco = precosSalvos[c.id] || c.preco;
+                html += `
+                    <div class="item-preco" data-id="${c.id}">
+                        <div><div class="nome">${c.nome}</div><div class="codigo">${c.codigo}</div></div>
+                        <div class="campo"><label>Preço (R$)</label><input type="number" class="admin-preco" value="${preco}" step="100" min="0" /></div>
+                        <div class="campo"><label>% Reajuste</label><input type="number" class="admin-percentual" value="10" step="0.5" min="0" max="100" /></div>
+                        <div style="font-size:10px;color:var(--text-dim);">+10%</div>
+                    </div>
+                `;
+            });
+            adminGridPrecos.innerHTML = html;
+        }
+
+        adminSalvarBtn.addEventListener('click', () => {
+            const itens = adminGridPrecos.querySelectorAll('.item-preco');
+            const novosPrecos = {};
+            itens.forEach(item => {
+                const id = item.dataset.id;
+                const precoInput = item.querySelector('.admin-preco');
+                novosPrecos[id] = parseFloat(precoInput.value) || 0;
+            });
+            salvarPrecos(novosPrecos);
+            alert('✅ Preços salvos com sucesso!');
+            fecharModalAdmin();
+            window.location.reload();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && adminModal.classList.contains('active')) {
+                fecharModalAdmin();
+            }
+        });
+    </script>
 </body>
 </html>
