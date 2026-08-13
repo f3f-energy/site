@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F3F Gestão energética — Gestão Integrada de Projetos de Energia</title>
+    <meta name="description" content="F3F Gestão coordena todo o seu projeto de energia — Mercado Livre, GD, Energia Solar, Eletropostos, BESS, Gestão Energética, Redes e Subestações — com um único responsável do início ao fim.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #020817;
+            --bg-alt: #07172f;
+            --card-bg: #0b1e3b;
+            --line: #17345d;
+            --text: #f0f4f8;
+            --text-dim: #94a3b8;
+            --accent: #e6c84f;
+            --whatsapp-color: #25D366;
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'IBM Plex Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
+        a { color: inherit; text-decoration: none; }
+        .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+        /* HEADER */
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(2, 8, 23, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(23, 52, 93, 0.5); }
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1140px; margin: 0 auto; }
+        .logo { font-size: 1.35rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .logo span { color: var(--accent); }
+        .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        nav .nav-links { display: flex; align-items: center; gap: 24px; }
+        nav a.navlink { font-size: 0.95rem; color: var(--text-dim); transition: color 0.2s; }
+        nav a.navlink:hover { color: #fff; }
+        .btn-nav { padding: 8px 20px; border-radius: 30px; background: rgba(230, 200, 79, 0.15); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; font-size: 0.9rem; transition: all 0.3s; }
+        .btn-nav:hover { background: var(--accent); color: var(--bg); }
+
+        /* SEÇÕES TELA CHEIA (FULLSCREEN) */
+        .screen-section {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px 60px 24px;
+            border-top: 1px solid var(--line);
+            position: relative;
+        }
+
+        /* HERO EXATAMENTE COMO SOLICITADO (Linha 1: Direita, Linha 2: Centro, Linha 3: Esquerda) */
+        .hero { 
+            background: radial-gradient(circle at 50% 20%, rgba(0, 136, 207, 0.15), transparent 60%), linear-gradient(rgba(2, 8, 23, 0.85), rgba(2, 8, 23, 0.98)), url("https://images.unsplash.com/photo-1508514177221-188b1cf16e9d") center/cover no-repeat; 
+        }
+        .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .eyebrow::before { content: ''; width: 24px; height: 2px; background: var(--accent); }
+        
+        .hero h1 { 
+            font-size: clamp(2.3rem, 5.2vw, 3.8rem); 
+            font-weight: 700; 
+            max-width: 950px; 
+            line-height: 1.25; 
+            margin-bottom: 20px; 
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .hero-line-1 { text-align: right; width: 100%; }
+        .hero-line-2 { text-align: center; width: 100%; }
+        .hero-line-3 { text-align: left; width: 100%; color: var(--accent); }
+
+        .hero p.sub { font-size: 1.1rem; color: var(--text-dim); max-width: 680px; line-height: 1.6; margin-bottom: 30px; }
+        
+        .cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 40px; font-weight: 700; font-size: 0.95rem; transition: all 0.3s ease; cursor: pointer; }
+        .btn-wsp { background: var(--whatsapp-color); color: #fff; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3); }
+        .btn-wsp:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5); }
+        .btn-ghost { border: 1px solid var(--line); color: var(--text); background: rgba(7, 23, 47, 0.6); }
+        .btn-ghost:hover { border-color: var(--text-dim); background: var(--card-bg); }
+
+        .section-head { max-width: 700px; margin-bottom: 36px; }
+        .section-head h2 { font-size: clamp(1.8rem, 3.2vw, 2.3rem); margin-top: 6px; line-height: 1.2; }
+        .section-head p { color: var(--text-dim); margin-top: 10px; font-size: 1rem; }
+
+        /* FUNDOS COM IMAGENS IMERSIVAS POR TELA */
+        .bg-diferencial { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
+        .bg-portfolio { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1509391365360-86922ae4fca0?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
+        .bg-como-funciona { background: linear-gradient(rgba(2, 8, 23, 0.92), rgba(2, 8, 23, 0.96)), url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; }
+        .bg-contato { background: linear-gradient(rgba(2, 8, 23, 0.88), rgba(1, 4, 10, 0.98)), url('https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat; text-align: center; }
+
+        /* PROBLEMA / CARDS (Ícones reduzidos pela metade conforme pedido) */
+        .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
+        .problem-card { background: var(--bg-alt); padding: 30px; border-radius: var(--radius); border: 1px solid var(--line); }
+        .problem-card.antes { border-top: 4px solid #e0665c; }
+        .problem-card.depois { border-top: 4px solid var(--accent); }
+        .problem-card h3 { font-size: 1.2rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .problem-card.antes h3 { color: #e0665c; }
+        .problem-card.depois h3 { color: var(--accent); }
+        .problem-card h3 svg { width: 14px; height: 14px; }
+        .problem-card ul { list-style: none; }
+        .problem-card li { color: var(--text-dim); font-size: 0.95rem; padding: 8px 0 8px 24px; position: relative; border-bottom: 1px solid rgba(23, 52, 93, 0.4); display: flex; align-items: center; }
+        .problem-card li svg { position: absolute; left: 0; width: 12px; height: 12px; }
+
+        /* PORTFÓLIO / SOLUÇÕES (Ícones maiores conforme pedido) */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%; }
+        .svc-card { background: rgba(11, 30, 59, 0.85); backdrop-filter: blur(5px); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .svc-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .svc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .svc-card .icon-tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600; color: var(--accent); background: rgba(230, 200, 79, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(230, 200, 79, 0.2); }
+        .svc-icon { width: 44px; height: 44px; color: var(--accent); display: flex; align-items: center; justify-content: center; background: rgba(230, 200, 79, 0.08); border-radius: 10px; }
+        .svc-icon svg { width: 32px; height: 32px; }
+        .svc-card h3 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .svc-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 16px; }
+        .svc-link { font-size: 0.85rem; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+        .svc-link:hover { text-decoration: underline; }
+
+        /* COMO FUNCIONA COM ÍCONES */
+        .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; width: 100%; }
+        .flow-step { background: var(--bg-alt); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); }
+        .flow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .flow-step .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--accent); }
+        .flow-icon { width: 28px; height: 28px; color: var(--accent); display: flex; align-items: center; justify-content: center; }
+        .flow-icon svg { width: 24px; height: 24px; }
+        .flow-step h4 { font-size: 1.05rem; margin-bottom: 8px; }
+        .flow-step p { color: var(--text-dim); font-size: 0.88rem; }
+
+        /* CONTATO */
+        .contact-box { max-width: 750px; margin: 0 auto; background: rgba(7, 23, 47, 0.85); backdrop-filter: blur(5px); padding: 45px 30px; border-radius: 24px; border: 1px solid var(--line); }
+        .contact-box h2 { font-size: 2rem; margin-bottom: 14px; }
+        .contact-box p { color: var(--text-dim); font-size: 1rem; margin-bottom: 24px; }
+        .contact-info { margin-top: 24px; font-size: 0.9rem; color: var(--text-dim); }
+        .contact-info a { color: var(--accent); text-decoration: underline; }
+
+        /* WHATSAPP FLOAT & BACK TO TOP */
+        .float-buttons { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
+        .wsp-float, .top-float { width: 50px; height: 50px; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s; cursor: pointer; }
+        .wsp-float { background-color: var(--whatsapp-color); color: #fff; }
+        .top-float { background-color: var(--card-bg); border: 1px solid var(--line); color: var(--accent); }
+        .wsp-float:hover, .top-float:hover { transform: scale(1.1); }
+        
+        /* FOOTER */
+        footer { padding: 30px 24px; border-top: 1px solid var(--line); background: #01040a; font-size: 0.85rem; color: var(--text-dim); text-align: center; }
+        .footer-wrap { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .footer-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .back-to-top-link { color: var(--accent); font-weight: 600; text-decoration: underline; cursor: pointer; transition: opacity 0.2s; }
+        .back-to-top-link:hover { opacity: 0.8; }
+
+        /* PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS (index_mob) CORRIGIDA COM FIXED E FULL COVER */
+        .page-mob { display: none; background: var(--bg); position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; overflow-y: auto; }
+        .page-mob.active { display: block; }
+        
+        .mob-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(2, 8, 23, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(23, 52, 93, 0.5); }
+        .mob-nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1140px; margin: 0 auto; }
+        .btn-voltar-inicio { padding: 8px 20px; border-radius: 30px; background: rgba(230, 200, 79, 0.15); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; font-size: 0.9rem; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+        .btn-voltar-inicio:hover { background: var(--accent); color: var(--bg); }
+
+        .mob-hero { padding: 140px 24px 60px 24px; text-align: center; background: radial-gradient(circle at 50% 20%, rgba(0, 136, 207, 0.15), transparent 60%), linear-gradient(rgba(2, 8, 23, 0.9), rgba(2, 8, 23, 0.98)), url("https://images.unsplash.com/photo-1593941707882-a5bba14938c7") center/cover no-repeat; }
+        .mob-hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 700; max-width: 900px; margin: 0 auto 16px auto; line-height: 1.2; }
+        .mob-hero p { color: var(--text-dim); max-width: 700px; margin: 0 auto 30px auto; font-size: 1.05rem; }
+
+        .mob-content { max-width: 1140px; margin: 0 auto; padding: 40px 24px 80px 24px; display: flex; flex-direction: column; gap: 40px; }
+        .mob-grid-main { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; align-items: center; }
+        .mob-card-highlight { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 20px; padding: 35px; border-left: 4px solid var(--accent); }
+        .mob-card-highlight h3 { font-size: 1.4rem; color: #fff; margin-bottom: 16px; }
+        .mob-card-highlight p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px; }
+        .mob-img-box img { width: 100%; border-radius: 20px; border: 1px solid var(--line); object-fit: cover; max-height: 380px; }
+
+        .mob-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .mob-subcard { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 16px; padding: 30px; }
+        .mob-subcard h4 { font-size: 1.2rem; color: var(--accent); margin-bottom: 12px; }
+        .mob-subcard p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
+
+        .mob-footer { padding: 30px 24px; border-top: 1px solid var(--line); background: #01040a; font-size: 0.85rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; max-width: 100%; }
+        .mob-footer-wrap { max-width: 1140px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
+        @media (max-width: 820px) { 
+            nav .nav-links { display: none; } 
+            .mob-grid-main { grid-template-columns: 1fr; }
+            .screen-section { height: auto; min-height: 100vh; padding: 120px 20px 80px 20px; } 
+            .hero-line-1, .hero-line-2, .hero-line-3 { text-align: left; } 
+        }
+    </style>
+</head>
+<body id="topo">
+
+    <div class="float-buttons">
+        <a href="https://wa.me/5562992892170?text=Olá!%20Gostaria%20de%20falar%20com%20a%20F3F%20Gestão%20sobre%20meu%20projeto." class="wsp-float" target="_blank" title="Falar no WhatsApp">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        </a>
+        <a href="#topo" class="top-float" title="Voltar ao topo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </a>
+    </div>
+
+    <!-- PÁGINA INTERNA DE MOBILIDADE / ELETROPOSTOS (index_mob) -->
+    <div class="page-mob" id="paginaMobilidade">
+        <header class="mob-header">
+            <div class="mob-nav">
+                <div class="logo"><span class="logo-dot"></span>F3F <span>Gestão</span></div>
+                <button class="btn-voltar-inicio" onclick="fecharPaginaMobilidade()">
+                    ← Voltar ao Início
+                </button>
+            </div>
+        </header>
+
+        <section class="mob-hero">
+            <div class="eyebrow" style="justify-content: center;">Parceria Oficial com as melhores marcas</div>
+            <h1>Infraestrutura de Recarga Veicular Avançada</h1>
+            <p>Soluções completas em mobilidade elétrica, desde carregadores residenciais e comerciais até estações ultrarrápidas de alta potência para frotas e rodovias.</p>
+            <a class="btn btn-wsp" href="https://wa.me/5562992892170?text=Olá!%20Quero%20solicitar%20um%20projeto%20de%20Recarga%20Veicular%20com%20a%20F3F." target="_blank">Solicitar Projeto com a F3F</a>
+        </section>
+
+        <div class="mob-content">
+            <div class="mob-grid-main">
+                <div class="mob-card-highlight">
+                    <h3>Gestão e Tecnologia com o melhor da Engenharia</h3>
+                    <p>Como parceiros oficiais de <strong>AS MELHORES MARCAS</strong>, entregamos linhas completas como <strong>WEMOB</strong>, reconhecida mundialmente pela robustez, segurança e inteligência em gestão de energia.</p>
+                    <p>Nós cuidamos de toda a cadeia: dimensionamento elétrico, estudo de impacto na subestação, infraestrutura civil e cabeamento, instalação dos equipamentos e configuração dos sistemas de controle de acesso e tarifação.</p>
+                </div>
+                <div class="mob-img-box">
+                    <img src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1000&auto=format&fit=crop" alt="Carregamento de Veículo Elétrico">
+                </div>
+            </div>
+
+            <div class="mob-cards-grid">
+                <div class="mob-subcard">
+                    <h4>WEMOB Wall & Parking</h4>
+                    <p>Ideais para residências, condomínios e vagas corporativas. Sistema inteligente com controle de acesso via cartão RFID ou aplicativo e balanceamento de carga.</p>
+                </div>
+                <div class="mob-subcard">
+                    <h4>WEMOB Station</h4>
+                    <p>Desenvolvidos para comércios, estacionamentos públicos e frotas. Alta durabilidade, resistência a intempéries e interface amigável para o motorista.</p>
+                </div>
+                <div class="mob-subcard">
+                    <h4>WEMOB Fast & Ultra</h4>
+                    <p>Estações de recarga rápida e ultrarrápida em corrente contínua (DC) para postos rodoviários e eletrificação pesada de frotas de ônibus e caminhões.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mob-footer">
+            <div class="mob-footer-wrap">
+                <div><strong>F3F Gestão energética</strong> — Projetos e soluções de Energia <a class="back-to-top-link" href="#" onclick="fecharPaginaMobilidade(); return false;" style="margin-left: 15px;">⚡ (Voltar à Página Principal)</a></div>
+                <div>©2026 F3F Gestão energética. Todos os direitos reservados.</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SITE PRINCIPAL -->
+    <header>
+        <nav>
+            <div class="logo"><span class="logo-dot"></span>F3F <span>Gestão</span></div>
+            <div class="nav-links">
+                <a class="navlink" href="#diferencial">Diferencial</a>
+                <a class="navlink" href="#portfolio">Soluções</a>
+                <a class="navlink" href="#como-funciona">Como Funciona</a>
+                <a class="navlink" href="#contato">Fale Conosco</a>
+                <a class="btn-nav" href="https://wa.me/5562992892170?text=Olá!%20Gostaria%20de%20falar%20com%20a%20F3F%20Gestão." target="_blank">WhatsApp</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- TELA 1: HERO EXATA -->
+    <section class="screen-section hero">
+        <div class="wrap">
+            <div class="eyebrow">Gestão Integrada de Projetos de Energia</div>
+            <h1>
+                <span class="hero-line-1">Um projeto de energia.</span>
+                <span class="hero-line-2">Vários especialistas.</span>
+                <span class="hero-line-3">Um só responsável.</span>
+            </h1>
+            <p class="sub">A <strong>F3F Gestão energética</strong> coordena todo o seu projeto elétrico — da geração solar ao Mercado Livre de Energia — com um único ponto de contato do diagnóstico à entrega.</p>
+            <div class="cta-group">
+                <a class="btn btn-wsp" href="https://wa.me/5562992892170?text=Olá!%20Quero%20fazer%20um%20diagnóstico." target="_blank">Falar com a F3F Gestão</a>
+                <a class="btn btn-ghost" href="#portfolio">Conhecer Soluções</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 2: DIFERENCIAL (Ícones reduzidos pela metade) -->
+    <section id="diferencial" class="screen-section bg-diferencial">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">O Diferencial F3F</div>
+                <h2>Projetos de energia exigem coordenação.</h2>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card antes">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#e0665c" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        Sem a F3F Gestão
+                    </h3>
+                    <ul>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e0665c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Múltiplos fornecedores sem comunicação</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e0665c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>O cliente gerencia e cobra prazos</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e0665c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Prazos e entregas desencontrados</li>
+                    </ul>
+                </div>
+                <div class="problem-card depois">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Com a F3F Gestão
+                    </h3>
+                    <ul>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Um único ponto de contato do início ao fim</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Escolha dos parceiros certos</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Garantia e responsabilidade pelo todo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 3: SOLUÇÕES / PORTFÓLIO (Ícones maiores) -->
+    <section id="portfolio" class="screen-section bg-portfolio">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">Nossas Soluções</div>
+                <h2>Soluções para a jornada da sua empresa</h2>
+            </div>
+            <div class="services-grid">
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">MERCADO LIVRE</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div></div>
+                        <h3>Mercado Livre de Energia</h3><p>Migração e gestão no Ambiente de Contratação Livre (ACL).</p>
+                    </div>
+                </div>
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">GD & SOLAR</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div></div>
+                        <h3>Geração Distribuída e Solar</h3><p>Projetos fotovoltaicos de alta eficiência para redução de custos.</p>
+                    </div>
+                </div>
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">BESS</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 2v5M8 2v5M10 11h4M12 9v4"/></svg></div></div>
+                        <h3>Sistemas BESS</h3><p>Armazenamento de energia em baterias e segurança energética.</p>
+                    </div>
+                </div>
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">INFRAESTRUTURA</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v20M18 2v20M2 6h20M2 18h20"/></svg></div></div>
+                        <h3>Redes e Subestações</h3><p>Projetos de infraestrutura elétrica e conexões à rede.</p>
+                    </div>
+                </div>
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">MOBILIDADE</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div></div>
+                        <h3>Eletropostos</h3><p>Infraestrutura completa de recarga para veículos elétricos (EV).</p>
+                    </div>
+                    <a class="svc-link" onclick="abrirPaginaMobilidade(event)">Ver detalhes da Solução →</a>
+                </div>
+                <div class="svc-card">
+                    <div>
+                        <div class="svc-header"><span class="icon-tag">GESTÃO</span><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div></div>
+                        <h3>Gestão Energética</h3><p>Monitoramento e estratégias contínuas para eficiência energética para que você cuide do seu core business.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 4: COMO FUNCIONA -->
+    <section id="como-funciona" class="screen-section bg-como-funciona">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="eyebrow">Como Funciona</div>
+                <h2>Você foca no seu negócio, nós na solução da sua energia.</h2>
+            </div>
+            <div class="flow-grid">
+                <div class="flow-step">
+                    <div class="flow-header"><span class="step-num">01. DIAGNÓSTICO</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+                    <h4>Entendimento</h4><p>Levantamento detalhado do perfil de consumo e necessidades.</p>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-header"><span class="step-num">02. DIRECIONAMENTO</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
+                    <h4>Parceiros Certos</h4><p>Seleção dos especialistas mais adequados para o seu projeto.</p>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-header"><span class="step-num">03. COORDENAÇÃO</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div></div>
+                    <h4>Gestão Unificada</h4><p>Acompanhamento rigoroso de prazos, integração de fornecedores e acompanhamento junto aos órgãos competentes.</p>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-header"><span class="step-num">04. ENTREGA</span><div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
+                    <h4>Resultado</h4><p>Projeto entregue com a garantia de um único responsável técnico, com entrega técnica garantida.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 5: CONTATO -->
+    <section class="screen-section bg-contato" id="contato">
+        <div class="wrap">
+            <div class="contact-box">
+                <h2>Pronto para transformar sua gestão de energia?</h2>
+                <p>Agende uma conversa técnica sobre as necessidades da sua empresa.</p>
+                <a class="btn btn-wsp" href="https://wa.me/5562992892170?text=Olá!" target="_blank">Falar via WhatsApp: (62) 99289-2170</a>
+                <div class="contact-info"><p>E-mail: <a href="mailto:f3f.gestao@gmail.com">f3f.gestao@gmail.com</a></p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-left">
+                <div><strong>F3F Gestão energética</strong> — Projetos e soluções de Energia</div>
+                <a class="back-to-top-link" href="#topo">Voltar ao topo ↑</a>
+            </div>
+            <div>©2026 F3F Gestão energética. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <script>
+        function abrirPaginaMobilidade(e) {
+            e.preventDefault();
+            document.getElementById('paginaMobilidade').classList.add('active');
+        }
+        function fecharPaginaMobilidade() {
+            document.getElementById('paginaMobilidade').classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>
