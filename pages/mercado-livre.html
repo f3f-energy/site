@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercado Livre de Energia | F3F Gestão Energética</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020817;
+      --bg-panel: #0b1e3b;
+      --bg-alt: #07172f;
+      --accent: #e6c84f;
+      --accent2: #6C3CE1;
+      --accent-blue: #0088CF;
+      --line: #17345d;
+      --text: #f0f4f8;
+      --text-dim: #94a3b8;
+      --whatsapp-color: #25D366;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .mono-label {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .mono-label {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ============================================
+           HEADER
+           ============================================ */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(2, 8, 23, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .btn-voltar {
+      padding: 8px 20px;
+      border-radius: 30px;
+      background: rgba(230, 200, 79, 0.15);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-voltar:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ============================================
+           SEÇÕES
+           ============================================ */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 120px 24px 80px;
+    }
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 100px;
+      background: radial-gradient(circle at 50% 20%, rgba(108, 60, 225, 0.08), transparent 60%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px 2px var(--accent);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.6vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p.lead {
+      margin-top: 28px;
+      max-width: 600px;
+      font-size: 1.08rem;
+      color: var(--text-dim);
+    }
+
+    .hero-img {
+      margin-top: 40px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      max-width: 900px;
+    }
+
+    .hero-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .hero-img:hover img {
+      transform: scale(1.02);
+    }
+
+    /* ============================================
+           FLOW
+           ============================================ */
+    .flow {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      max-width: 760px;
+      flex-wrap: wrap;
+    }
+
+    .flow-node {
+      flex: 0 0 auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flow-node .ring {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--accent2);
+      background: var(--bg);
+    }
+
+    .flow-line {
+      flex: 1 1 auto;
+      height: 2px;
+      position: relative;
+      background: var(--line);
+      overflow: hidden;
+      margin: 0 4px;
+      top: -9px;
+      min-width: 30px;
+    }
+
+    .flow-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -40%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+      animation: travel 2.8s linear infinite;
+    }
+
+    @keyframes travel {
+      to {
+        left: 100%;
+      }
+    }
+
+    /* ============================================
+           SECTION HEADERS
+           ============================================ */
+    .sec-head {
+      margin-bottom: 52px;
+      max-width: 640px;
+    }
+
+    .sec-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .sec-head h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .sec-head p {
+      color: var(--text-dim);
+      margin-top: 16px;
+      font-size: 1rem;
+    }
+
+    /* ============================================
+           GRID ELEGIBILIDADE
+           ============================================ */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .grid-2 .cell {
+      background: var(--bg-panel);
+      padding: 32px;
+    }
+
+    .grid-2 .cell h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .grid-2 .cell p {
+      color: var(--text-dim);
+      font-size: 0.94rem;
+    }
+
+    .grid-2 .cell .tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 100px;
+      padding: 3px 10px;
+      margin-top: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+           STEPS
+           ============================================ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .step:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step .idx {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--accent2);
+      font-size: 0.9rem;
+      padding-top: 2px;
+    }
+
+    .step h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: var(--text-dim);
+      font-size: 0.94rem;
+      max-width: 560px;
+    }
+
+    /* ============================================
+           CARDS
+           ============================================ */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .card {
+      background: var(--bg-panel);
+      padding: 30px 26px;
+    }
+
+    .card .pct {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .card h4 {
+      margin-top: 10px;
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin-top: 8px;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    /* ============================================
+           IMAGEM SEÇÃO
+           ============================================ */
+    .img-section {
+      margin: 40px 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .img-section img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ============================================
+           ROLE F3F
+           ============================================ */
+    .role {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 44px;
+      background: radial-gradient(circle at 0% 0%, rgba(108, 60, 225, 0.10), transparent 60%);
+    }
+
+    .role h3 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .role p {
+      color: var(--text-dim);
+      max-width: 640px;
+      margin-bottom: 14px;
+    }
+
+    .role ul {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .role li {
+      list-style: none;
+      font-size: 0.94rem;
+      color: var(--text);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .role li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent2);
+      border-radius: 1px;
+      transform: rotate(45deg);
+    }
+
+    /* ============================================
+           CTA
+           ============================================ */
+    .cta {
+      text-align: center;
+      padding: 80px 24px 60px;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      max-width: 680px;
+      margin: 0 auto 24px;
+    }
+
+    .cta p {
+      color: var(--text-dim);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent2), #7C3AED);
+      color: #fff;
+      font-weight: 600;
+      padding: 15px 34px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-size: 0.98rem;
+      box-shadow: 0 0 30px -6px rgba(108, 60, 225, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px -6px rgba(108, 60, 225, 0.6);
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp-color);
+      box-shadow: 0 0 30px -6px rgba(37, 211, 102, 0.4);
+      margin-right: 12px;
+    }
+
+    .btn-whatsapp:hover {
+      box-shadow: 0 0 40px -6px rgba(37, 211, 102, 0.6);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+           FOOTER
+           ============================================ */
+    .source {
+      border-top: 1px solid var(--line);
+      padding: 48px 24px 60px;
+    }
+
+    .source .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .source-block {
+      max-width: 560px;
+    }
+
+    .source-block .mono-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .source-block a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.92rem;
+      border-bottom: 1px solid rgba(230, 200, 79, 0.3);
+    }
+
+    .source-block a:hover {
+      border-color: var(--accent);
+    }
+
+    .source-block p {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    .brand {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ============================================
+           BACK TO TOP
+           ============================================ */
+    .back-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 99;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .back-top:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(230, 200, 79, 0.2);
+    }
+
+    /* ============================================
+           RESPONSIVE
+           ============================================ */
+    @media (max-width: 820px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        grid-template-columns: 40px 1fr;
+      }
+
+      section {
+        padding: 100px 20px 60px;
+      }
+
+      .role {
+        padding: 28px;
+      }
+
+      .hero {
+        min-height: 60vh;
+      }
+
+      .flow {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+      }
+
+      .flow-node {
+        font-size: 10px;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(1.8rem, 8vw, 2.4rem);
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .grid-2 .cell {
+        padding: 20px;
+      }
+
+      .step {
+        grid-template-columns: 30px 1fr;
+        gap: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .flow-line::after,
+      .eyebrow .dot {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================
+         HEADER
+         ============================================ -->
+  <header>
+    <nav>
+      <a href="../index.html" class="logo">
+        <span class="logo-dot"></span>F3F <span>Gestão</span>
+      </a>
+      <a href="../index.html" class="btn-voltar">← Voltar ao Início</a>
+    </nav>
+  </header>
+
+  <!-- ============================================
+         HERO
+         ============================================ -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">
+        <span class="dot"></span> AMBIENTE DE CONTRATAÇÃO LIVRE · ACL
+      </div>
+      <h1>Sua empresa pode <span>escolher</span> de quem compra energia.</h1>
+      <p class="lead">O mercado cativo entrega uma conta com tarifa fixada pela distribuidora. O mercado livre entrega
+        uma negociação — preço, prazo e origem da energia definidos por contrato, não por tabela.</p>
+
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2000&auto=format&fit=crop"
+          alt="Mercado Livre de Energia">
+      </div>
+
+      <div class="flow">
+        <div class="flow-node">
+          <div class="ring"></div>GERADOR
+        </div>
+        <div class="flow-line"></div>
+        <div class="flow-node">
+          <div class="ring"></div>COMERCIALIZADORA
+        </div>
+        <div class="flow-line"></div>
+        <div class="flow-node">
+          <div class="ring"></div>SUA EMPRESA
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         ELEGIBILIDADE
+         ============================================ -->
+  <section id="quem-pode">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-num">01 — ELEGIBILIDADE</span>
+        <h2>Quem já pode migrar hoje</h2>
+        <p>A entrada no ambiente livre depende de tensão de conexão e demanda contratada — não do setor de atuação da
+          empresa.</p>
+      </div>
+      <div class="grid-2">
+        <div class="cell">
+          <h3>⚡ Alta tensão, qualquer demanda</h3>
+          <p>Unidades conectadas em alta tensão têm acesso livre ao mercado desde 2024, independentemente do quanto
+            consomem.</p>
+          <span class="tag">SEM RESTRIÇÃO DE DEMANDA</span>
+        </div>
+        <div class="cell">
+          <h3>📊 Grupo A, a partir de 500 kW</h3>
+          <p>Consumidores em média/alta tensão com demanda igual ou superior a 500 kW se enquadram como Livres ou
+            Especiais.</p>
+          <span class="tag">CONSUMIDOR LIVRE / ESPECIAL</span>
+        </div>
+        <div class="cell">
+          <h3>📉 Abaixo de 500 kW</h3>
+          <p>Empresas de menor porte também migram, desde que representadas por uma comercializadora varejista.</p>
+          <span class="tag">VIA VAREJISTA</span>
+        </div>
+        <div class="cell">
+          <h3>☀️ Geração própria</h3>
+          <p>Quem gera sua própria energia — solar, por exemplo — pode operar como Autoprodutor e vender o excedente no
+            mesmo ambiente.</p>
+          <span class="tag">APE / PIE — REGISTRO CCEE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         COMO FUNCIONA
+         ============================================ -->
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-num">02 — O CAMINHO</span>
+        <h2>Como a migração acontece, na prática</h2>
+      </div>
+
+      <div class="img-section">
+        <img src="https://images.unsplash.com/photo-1509391365360-86922ae4fca0?q=80&w=2000&auto=format&fit=crop"
+          alt="Processo de migração">
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="idx">01</div>
+          <div>
+            <h3>Diagnóstico de viabilidade</h3>
+            <p>Levantamento do histórico de consumo, tensão de conexão e demanda contratada para confirmar enquadramento
+              e estimar economia real.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">02</div>
+          <div>
+            <h3>Aviso de desligamento à distribuidora</h3>
+            <p>Comunicação formal com antecedência mínima de seis meses, mantendo o contrato de uso do sistema de
+              distribuição (TUSD).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">03</div>
+          <div>
+            <h3>Escolha do fornecedor</h3>
+            <p>Comparação de propostas entre geradores e comercializadoras, negociando preço, prazo e garantias
+              contratuais.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">04</div>
+          <div>
+            <h3>Gestão contínua</h3>
+            <p>Acompanhamento de preços, consumo e obrigações regulatórias ao longo de todo o contrato — é aqui que a
+              maioria das empresas perde economia por falta de acompanhamento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         VANTAGENS
+         ============================================ -->
+  <section id="vantagens">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-num">03 — POR QUE MIGRAR</span>
+        <h2>O que muda no resultado</h2>
+      </div>
+
+      <div class="img-section">
+        <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=2000&auto=format&fit=crop"
+          alt="Vantagens do Mercado Livre">
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="pct">20–40%</div>
+          <h4>de economia potencial</h4>
+          <p>Faixa observada ao sair da tarifa regulada para contratos negociados diretamente no ambiente livre.</p>
+        </div>
+        <div class="card">
+          <div class="pct">Preço fixo</div>
+          <h4>previsibilidade orçamentária</h4>
+          <p>Contratos de longo prazo blindam a empresa de reajustes por crise hídrica ou mudança regulatória.</p>
+        </div>
+        <div class="card">
+          <div class="pct">Origem</div>
+          <h4>energia com rastreabilidade</h4>
+          <p>Possibilidade de contratar fonte renovável certificada, com impacto direto em metas ESG.</p>
+        </div>
+        <div class="card">
+          <div class="pct">Sob medida</div>
+          <h4>contrato personalizado</h4>
+          <p>Volume, prazo e fonte definidos conforme a operação — não conforme uma tabela padrão da distribuidora.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         F3F
+         ============================================ -->
+  <section id="f3f">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-num">04 — CONDUÇÃO DO PROJETO</span>
+        <h2>Onde a F3F entra</h2>
+      </div>
+
+      <div class="img-section">
+        <img src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2000&auto=format&fit=crop"
+          alt="F3F Gestão Energética">
+      </div>
+
+      <div class="role">
+        <h3>Um projeto de energia raramente é uma decisão só.</h3>
+        <p>Migrar para o mercado livre costuma vir junto com outras decisões — geração própria, armazenamento,
+          infraestrutura de rede. A F3F Gestão orquestra esse conjunto, direcionando cada frente ao especialista certo,
+          sem que sua empresa precise gerenciar fornecedores isolados.</p>
+        <ul>
+          <li>Diagnóstico único do seu perfil de consumo e viabilidade de migração</li>
+          <li>Coordenação entre os fornecedores envolvidos no projeto, do início à operação</li>
+          <li>Acompanhamento contínuo de preço, contrato e conformidade regulatória</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         CTA
+         ============================================ -->
+  <section class="cta">
+    <div class="wrap">
+      <h2>Quer saber se sua empresa já pode migrar?</h2>
+      <p>Uma conversa de 20 minutos é suficiente para saber se o enquadramento e a economia fazem sentido pro seu caso.
+      </p>
+      <div class="btn-group">
+        <a class="btn btn-whatsapp"
+          href="https://wa.me/5562992892170?text=Olá!%20Quero%20saber%20sobre%20o%20Mercado%20Livre%20de%20Energia."
+          target="_blank">
+          📱 Falar no WhatsApp
+        </a>
+        <a class="btn" href="mailto:f3f.gestao@gmail.com?subject=Mercado%20Livre%20de%20Energia">
+          📧 Enviar E-mail
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+         FOOTER
+         ============================================ -->
+  <footer class="source">
+    <div class="wrap">
+      <div class="source-block">
+        <span class="mono-label">FONTE E REFERÊNCIA</span>
+        <p>Este conteúdo foi produzido pela F3F Gestão com base em informações públicas sobre o Ambiente de Contratação
+          Livre (ACL). Para o artigo de referência completo:</p>
+        <a href="https://canalsolar.com.br/mercado-livre-de-energia/" target="_blank" rel="noopener noreferrer">
+          Canal Solar — "Mercado livre de energia: o que é, como funciona e vantagens para empresas" ↗
+        </a>
+      </div>
+      <div class="brand">
+        F3F GESTÃO ENERGÉTICA<br>
+        © 2026
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+         BACK TO TOP
+         ============================================ -->
+  <a href="#" class="back-top" title="Voltar ao topo">↑</a>
+
+  <script>
+    // Smooth scroll para âncoras
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+
+    // Botão voltar ao topo
+    const backTop = document.querySelector('.back-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backTop.style.display = 'flex';
+      } else {
+        backTop.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+
+</html>

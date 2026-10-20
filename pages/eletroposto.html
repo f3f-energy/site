@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eletropostos | F3F Gestão</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #020817;
+            color: #f0f4f8;
+        }
+
+        .wrap {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(2, 8, 23, 0.95);
+            padding: 16px 0;
+            border-bottom: 1px solid #17345d;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #e6c84f;
+        }
+
+        .btn-voltar {
+            color: #e6c84f;
+            text-decoration: none;
+            border: 1px solid #e6c84f;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .btn-voltar:hover {
+            background: #e6c84f;
+            color: #020817;
+        }
+
+        .hero {
+            padding: 120px 0 30px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 20%, rgba(108, 60, 225, 0.1), transparent 60%);
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+        }
+
+        .hero h1 span {
+            color: #e6c84f;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 16px auto 0;
+            font-size: 1.05rem;
+        }
+
+        .btn-liberar-hero {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #e6c84f, #f59e0b);
+            color: #020817;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 50px rgba(230, 200, 79, 0.3);
+            animation: pulse-glow 2s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-liberar-hero:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 80px rgba(230, 200, 79, 0.6);
+        }
+
+        .btn-liberar-hero .sub {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-top: 4px;
+            letter-spacing: 0;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 50px rgba(230, 200, 79, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 80px rgba(230, 200, 79, 0.6);
+            }
+        }
+
+        .btn-liberar-hero.liberado {
+            background: #10B981;
+            animation: none;
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-liberar-hero.liberado:hover {
+            box-shadow: 0 0 80px rgba(16, 185, 129, 0.6);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #0b1e3b;
+            border: 2px solid #e6c84f;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 0 60px rgba(230, 200, 79, 0.2);
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 24px;
+            color: #94a3b8;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal .close:hover {
+            color: #fff;
+        }
+
+        .modal h2 {
+            color: #e6c84f;
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .modal .input-group {
+            margin-bottom: 14px;
+        }
+
+        .modal .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .modal .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #07172f;
+            border: 2px solid #17345d;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .modal .input-group input:focus {
+            border-color: #e6c84f;
+            outline: none;
+        }
+
+        .modal .input-group input::placeholder {
+            color: #4a5a7a;
+        }
+
+        .modal .btn-confirmar {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #e6c84f, #f59e0b);
+            color: #020817;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+
+        .modal .btn-confirmar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(230, 200, 79, 0.3);
+        }
+
+        .modal .aviso {
+            color: #4a5a7a;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .conteudo-bloqueado {
+            opacity: 0.15;
+            filter: blur(3px);
+            pointer-events: none;
+            transition: all 0.8s ease;
+            user-select: none;
+            position: relative;
+        }
+
+        .conteudo-bloqueado::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 64px;
+            z-index: 10;
+            opacity: 1;
+        }
+
+        .conteudo-bloqueado .overlay-text {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            color: #e6c84f;
+            font-weight: 700;
+            z-index: 10;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .conteudo-bloqueado .overlay-text small {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .conteudo-liberado {
+            opacity: 1;
+            filter: none;
+            pointer-events: auto;
+            user-select: auto;
+        }
+
+        .conteudo-liberado::after {
+            display: none;
+        }
+
+        .conteudo-liberado .overlay-text {
+            display: none;
+        }
+
+        .badge-liberado {
+            display: inline-block;
+            background: #1a3a2a;
+            border: 2px solid #34D399;
+            color: #34D399;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: #0b1e3b;
+            border: 1px solid #17345d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: #e6c84f;
+            margin-bottom: 12px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: #07172f;
+            border: 1px solid #17345d;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            border-color: #6C3CE1;
+            outline: none;
+        }
+
+        .resultado {
+            background: #07172f;
+            border: 1px solid #6C3CE1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .resultado .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .resultado .item .label {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .resultado .item .valor {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e6c84f;
+        }
+
+        .resultado .item .valor.green {
+            color: #34D399;
+        }
+
+        .resultado .item .valor.purple {
+            color: #A78BFA;
+        }
+
+        .resultado .item .valor.red {
+            color: #F87171;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #6C3CE1;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #8B5CF6;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #e6c84f;
+            color: #020817;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-proposta {
+            background: linear-gradient(135deg, #e6c84f, #f59e0b);
+            color: #020817;
+            padding: 14px 32px;
+            font-size: 1rem;
+            animation: pulse-gold 2s ease-in-out infinite;
+        }
+
+        .btn-proposta:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        @keyframes pulse-gold {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(230, 200, 79, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(230, 200, 79, 0.4);
+            }
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .wemob-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .wemob-item {
+            background: #07172f;
+            border: 2px solid #17345d;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .wemob-item.selecionado {
+            border-color: #6C3CE1;
+            background: rgba(108, 60, 225, 0.15);
+        }
+
+        .wemob-item:hover {
+            border-color: #e6c84f;
+            transform: translateY(-2px);
+        }
+
+        .wemob-item .icon {
+            font-size: 2rem;
+        }
+
+        .wemob-item .nome {
+            font-weight: 600;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .wemob-item .desc {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .wemob-item .preco {
+            color: #e6c84f;
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .wemob-item .codigo {
+            font-size: 8px;
+            color: #4a5a7a;
+            font-family: monospace;
+        }
+
+        .misterio-texto {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-style: italic;
+            border-left: 3px solid #6C3CE1;
+            padding-left: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #17345d;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-liberar-hero {
+                padding: 16px 30px;
+                font-size: 1.1rem;
+            }
+
+            .modal {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-liberar-hero {
+                padding: 14px 20px;
+                font-size: 0.95rem;
+            }
+
+            .btn-liberar-hero .sub {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="wrap">
+            <div class="logo">F3F <span>Gestão</span></div>
+            <a href="../index.html" class="btn-voltar">← Voltar</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="wrap">
+            <h1>⚡ Estudo de Viabilidade para <span>Eletropostos</span></h1>
+            <p>Calcule o investimento, receita e payback da sua estação de recarga para veículos elétricos.</p>
+            <button class="btn-liberar-hero" id="btnLiberarHero" onclick="abrirModal()">
+                🔓 CLIQUE AQUI PARA LIBERAR OS PREÇOS
+                <span class="sub">⬇ Preencha seus dados e veja os valores ⬇</span>
+            </button>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="modalLead">
+        <div class="modal">
+            <button class="close" onclick="fecharModal()">✕</button>
+            <h2>🔓 Liberar Acesso ao Cálculo</h2>
+            <p>Preencha seus dados para continuar e simular seu projeto.</p>
+            <div class="input-group">
+                <label>👤 Nome Completo *</label>
+                <input type="text" id="leadNome" placeholder="Digite seu nome completo">
+            </div>
+            <div class="input-group">
+                <label>📧 E-mail *</label>
+                <input type="email" id="leadEmail" placeholder="seu@email.com">
+            </div>
+            <div class="input-group">
+                <label>📱 Telefone *</label>
+                <input type="tel" id="leadTelefone" placeholder="(62) 99999-9999">
+            </div>
+            <button class="btn-confirmar" onclick="liberarAcesso()">🔓 LIBERAR ACESSO</button>
+            <p class="aviso">🔒 Seus dados estão seguros. Não compartilhamos com terceiros.</p>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div id="conteudoPrincipal" class="conteudo-bloqueado">
+            <div class="overlay-text">
+                🔒 Site Bloqueado
+                <small>Clique no botão amarelo acima para liberar</small>
+            </div>
+
+            <div id="badgeLiberado" class="hidden" style="text-align:center;margin-bottom:16px;">
+                <span class="badge-liberado">✅ Acesso liberado! Agora você pode simular seu projeto</span>
+            </div>
+
+            <div class="card">
+                <h3>🔌 Selecione o Carregador</h3>
+                <div class="wemob-grid" id="wemobGrid"></div>
+            </div>
+
+            <div class="card">
+                <h3>⚙️ Dimensionamento</h3>
+                <div class="grid-2">
+                    <div class="input-group"><label>Cliente / Projeto</label><input type="text" id="cliente"
+                            placeholder="Ex: Shopping Plaza"></div>
+                    <div class="input-group"><label>Tipo de Local</label><select id="tipoLocal">
+                            <option>Estacionamento/Shopping</option>
+                            <option>Posto/Rodovia</option>
+                            <option>Hotel/Pousada</option>
+                            <option>Empresarial</option>
+                        </select></div>
+                    <div class="input-group"><label>Quantidade</label><input type="number" id="qtd" value="1" min="1">
+                    </div>
+                    <div class="input-group"><label>Tarifa Venda (R$/kWh)</label><input type="number" id="tarifa"
+                            value="2.10" step="0.05"></div>
+                    <div class="input-group"><label>Custo Energia (R$/kWh)</label><input type="number" id="custoEnergia"
+                            value="1.10" step="0.05"></div>
+                    <div class="input-group"><label>Horas de Uso/Dia</label><input type="number" id="horas" value="4"
+                            step="0.5"></div>
+                    <div class="input-group"><label>Custo de Obra (R$)</label><input type="number" id="obra"
+                            value="15000" step="1000"></div>
+                    <div class="input-group"><label>Margem de Lucro (%)</label><input type="number" id="margem"
+                            value="45"></div>
+                </div>
+            </div>
+
+            <div id="resultadoContainer" class="resultado">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <h3 style="color:#e6c84f;">📊 Resumo Financeiro</h3>
+                    <span
+                        style="background:#6C3CE1;padding:2px 10px;border-radius:12px;font-size:10px;">SIMULAÇÃO</span>
+                </div>
+                <div class="grid" id="resultadosGrid">
+                    <div class="item">
+                        <div class="label">Investimento Total</div>
+                        <div class="valor" id="resCapex">R$ 0,00</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">Receita Bruta Mensal</div>
+                        <div class="valor" id="resReceita">R$ 0,00</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">Lucro Líquido Mensal</div>
+                        <div class="valor green" id="resLucro">R$ 0,00</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">Payback Estimado</div>
+                        <div class="valor" id="resPayback">0 meses</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">ROI Anual</div>
+                        <div class="valor purple" id="resRoi">0%</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">Consumo Mensal</div>
+                        <div class="valor" id="resConsumo">0 kWh</div>
+                    </div>
+                </div>
+                <div class="misterio-texto" id="misterioTexto">
+                    💡 Quer ver o payback completo e uma proposta personalizada?
+                    Clique no botão abaixo e nosso especialista entrará em contato.
+                </div>
+            </div>
+
+            <div style="text-align:center;margin-top:20px;">
+                <button class="btn btn-proposta" id="btnProposta" onclick="solicitarProposta()">
+                    📄 Quero minha Proposta Completa
+                </button>
+                <p style="color:#4a5a7a;font-size:0.8rem;margin-top:8px;">
+                    ⚡ Um especialista F3F vai analisar seu projeto e enviar uma proposta personalizada
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="wrap">© 2026 F3F Gestão Energética | (62) 99289-2170 | f3f.gestao@gmail.com</div>
+    </div>
+
+    <script>
+        const CARREGADORES = [
+            { id: 'station_30', nome: 'WEMOB STATION 30kW', codigo: 'WEMOB-S-030-W-E-4G-R-H-1CS2', potencia: 30, preco: 87927.54, icone: '⚡', desc: 'DC 30kW' },
+            { id: 'station_40', nome: 'WEMOB STATION 40kW', codigo: 'WEMOB-S-040-W-E-4G-R-H-1CS2', potencia: 40, preco: 99656.23, icone: '⚡', desc: 'DC 40kW' },
+            { id: 'station_80', nome: 'WEMOB STATION 80kW DUAL', codigo: 'WEMOB-S-080-W-E-4G-R-H-2CS2', potencia: 80, preco: 201922.14, icone: '⚡⚡', desc: 'DC 80kW Dual' },
+            { id: 'station_120', nome: 'WEMOB STATION 120kW DUAL', codigo: 'WEMOB-S-120-W-E-4G-R-H-2CS2', potencia: 120, preco: 271610.34, icone: '⚡⚡', desc: 'DC 120kW Dual' },
+            { id: 'station_160', nome: 'WEMOB STATION 160kW DUAL', codigo: 'WEMOB-S-160-W-E-4G-R-H-2CS2', potencia: 160, preco: 299419.26, icone: '⚡⚡', desc: 'DC 160kW Dual' },
+            { id: 'station_180', nome: 'WEMOB STATION 180kW DUAL', codigo: 'WEMOB-S-180-W-E-4G-R-H-2CS2', potencia: 180, preco: 350449.42, icone: '⚡⚡', desc: 'DC 180kW Dual' },
+            { id: 'station_240', nome: 'WEMOB STATION 240kW DUAL', codigo: 'WEMOB-S-240-W-E-4G-R-H-2CS2', potencia: 240, preco: 460575.30, icone: '⚡⚡', desc: 'DC 240kW Dual' }
+        ];
+
+        const SUPABASE_URL = 'https://nmzifhqivuhdfwlelmxp.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5temlmaHFpdnVoZGZ3bGVsbXhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTgzNzgsImV4cCI6MjA4OTY5NDM3OH0.AFi43M_euM7iztzOyCamh1HGen3SiBUXQtfknBoWTcc';
+
+        let supabaseClient = null;
+        let leadLiberado = false;
+        let leadDados = null;
+        let carregadorSelecionado = CARREGADORES[0];
+
+        function initSupabase() {
+            if (typeof supabase === 'undefined') return null;
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            return supabaseClient;
+        }
+        initSupabase();
+
+        function formatarMoeda(valor) {
+            return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        }
+
+        function calcular() {
+            const qtd = parseInt(document.getElementById('qtd').value) || 1;
+            const tarifa = parseFloat(document.getElementById('tarifa').value) || 0;
+            const custo = parseFloat(document.getElementById('custoEnergia').value) || 0;
+            const horas = parseFloat(document.getElementById('horas').value) || 0;
+            const obra = parseFloat(document.getElementById('obra').value) || 0;
+            const margem = parseFloat(document.getElementById('margem').value) || 0;
+            const precoUnit = carregadorSelecionado.preco;
+            const pot = carregadorSelecionado.potencia;
+
+            const capexEquipamentos = qtd * precoUnit;
+            const capexTotal = capexEquipamentos + obra;
+            const potTotalKw = qtd * pot;
+            const kwhDia = potTotalKw * horas * 0.6;
+            const kwhMes = kwhDia * 30;
+            const receitaBrutaMensal = kwhMes * tarifa;
+            const custoEnergiaMensal = kwhMes * custo;
+            const lucroLiquidoMensal = (receitaBrutaMensal - custoEnergiaMensal) * (margem / 100);
+            const paybackMeses = lucroLiquidoMensal > 0 ? (capexTotal / lucroLiquidoMensal) : 0;
+            const roiAnual = capexTotal > 0 ? (lucroLiquidoMensal * 12 / capexTotal * 100) : 0;
+
+            return { capexEquipamentos, capexTotal, potTotalKw, kwhMes, receitaBrutaMensal, lucroLiquidoMensal, paybackMeses, roiAnual };
+        }
+
+        function atualizarResultados() {
+            const c = calcular();
+            document.getElementById('resCapex').textContent = formatarMoeda(c.capexTotal);
+            document.getElementById('resReceita').textContent = formatarMoeda(c.receitaBrutaMensal);
+            document.getElementById('resLucro').textContent = formatarMoeda(c.lucroLiquidoMensal);
+            document.getElementById('resPayback').textContent = c.paybackMeses.toFixed(1) + ' meses';
+            document.getElementById('resRoi').textContent = c.roiAnual.toFixed(1) + '%';
+            document.getElementById('resConsumo').textContent = Math.round(c.kwhMes).toLocaleString('pt-BR') + ' kWh';
+        }
+
+        function renderWemob() {
+            const grid = document.getElementById('wemobGrid');
+            let html = '';
+            CARREGADORES.forEach(car => {
+                const sel = carregadorSelecionado.id === car.id ? 'selecionado' : '';
+                html += `<div class="wemob-item ${sel}" onclick="selecionarCarregador('${car.id}')">
+            <div class="icon">${car.icone}</div>
+            <div class="nome">${car.nome}</div>
+            <div class="desc">${car.desc}</div>
+            <div class="preco">${formatarMoeda(car.preco)}</div>
+            <div class="codigo">${car.codigo}</div>
+        </div>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function selecionarCarregador(id) {
+            const car = CARREGADORES.find(c => c.id === id);
+            if (car) { carregadorSelecionado = car; renderWemob(); atualizarResultados(); }
+        }
+
+        function abrirModal() {
+            if (leadLiberado) {
+                alert('✅ Você já tem acesso liberado!');
+                return;
+            }
+            document.getElementById('modalLead').classList.add('active');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalLead').classList.remove('active');
+        }
+
+        async function liberarAcesso() {
+            const nome = document.getElementById('leadNome').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const telefone = document.getElementById('leadTelefone').value.trim();
+
+            if (!nome || !email || !telefone) {
+                alert('⚠️ Preencha todos os campos!');
+                return;
+            }
+
+            leadDados = { nome, email, telefone };
+
+            try {
+                if (supabaseClient) {
+                    await supabaseClient.from('leads').insert([{
+                        nome, email, telefone,
+                        origem: 'site',
+                        pagina: 'eletropostos',
+                        criado_em: new Date().toISOString()
+                    }]);
+                }
+            } catch (e) { console.warn('Erro:', e); }
+
+            leadLiberado = true;
+            fecharModal();
+
+            document.getElementById('conteudoPrincipal').classList.remove('conteudo-bloqueado');
+            document.getElementById('conteudoPrincipal').classList.add('conteudo-liberado');
+            document.getElementById('badgeLiberado').classList.remove('hidden');
+
+            const btnHero = document.getElementById('btnLiberarHero');
+            btnHero.textContent = '✅ ACESSO LIBERADO!';
+            btnHero.classList.add('liberado');
+            btnHero.onclick = function () { alert('✅ Você já tem acesso liberado!'); };
+
+            document.getElementById('misterioTexto').innerHTML = `
+        💡 Agora você vê os resultados. 
+        Quer uma proposta completa e personalizada? 
+        Clique no botão abaixo e nosso especialista analisará seu projeto.
+    `;
+
+            renderWemob();
+            atualizarResultados();
+
+            document.querySelectorAll('#conteudoPrincipal input, #conteudoPrincipal select').forEach(el => {
+                el.addEventListener('change', atualizarResultados);
+                el.addEventListener('input', atualizarResultados);
+            });
+
+            alert('✅ Acesso liberado! Agora você pode simular seu projeto.');
+        }
+
+        function solicitarProposta() {
+            if (!leadLiberado) {
+                alert('🔒 Clique no botão amarelo para liberar o acesso primeiro!');
+                return;
+            }
+
+            const c = calcular();
+            const cliente = document.getElementById('cliente').value.trim() || 'Cliente';
+            const tipoLocal = document.getElementById('tipoLocal').value || 'Não informado';
+            const qtd = document.getElementById('qtd').value || 1;
+            const tarifa = document.getElementById('tarifa').value || 0;
+            const custo = document.getElementById('custoEnergia').value || 0;
+            const horas = document.getElementById('horas').value || 0;
+            const obra = document.getElementById('obra').value || 0;
+            const margem = document.getElementById('margem').value || 0;
+
+            const msg = '🚨 PROPOSTA COMPLETA SOLICITADA!\n\n' +
+                '📋 DADOS DO CLIENTE:\n' +
+                'Nome: ' + (leadDados?.nome || 'Não informado') + '\n' +
+                'E-mail: ' + (leadDados?.email || 'Não informado') + '\n' +
+                'Telefone: ' + (leadDados?.telefone || 'Não informado') + '\n\n' +
+                '⚙️ DADOS DO PROJETO:\n' +
+                'Cliente: ' + cliente + '\n' +
+                'Tipo Local: ' + tipoLocal + '\n' +
+                'Carregador: ' + carregadorSelecionado.nome + '\n' +
+                'Quantidade: ' + qtd + ' unidade(s)\n' +
+                'Tarifa Venda: R$ ' + tarifa + '/kWh\n' +
+                'Custo Energia: R$ ' + custo + '/kWh\n' +
+                'Horas Uso/Dia: ' + horas + 'h\n' +
+                'Custo Obra: R$ ' + obra + '\n' +
+                'Margem: ' + margem + '%\n\n' +
+                '📊 RESULTADOS:\n' +
+                'CAPEX Total: ' + formatarMoeda(c.capexTotal) + '\n' +
+                'Receita Mensal: ' + formatarMoeda(c.receitaBrutaMensal) + '\n' +
+                'Lucro Mensal: ' + formatarMoeda(c.lucroLiquidoMensal) + '\n' +
+                'Payback: ' + c.paybackMeses.toFixed(1) + ' meses\n' +
+                'ROI: ' + c.roiAnual.toFixed(1) + '%\n\n' +
+                '📱 Contato: (62) 99289-2170';
+
+            window.open('https://wa.me/5562992892170?text=' + encodeURIComponent(msg), '_blank');
+
+            try {
+                if (supabaseClient) {
+                    supabaseClient.from('propostas_eletroposto').insert([{
+                        lead_nome: leadDados?.nome || '',
+                        lead_email: leadDados?.email || '',
+                        lead_telefone: leadDados?.telefone || '',
+                        cliente: cliente,
+                        tipo_local: tipoLocal,
+                        carregador_id: carregadorSelecionado.id,
+                        carregador_nome: carregadorSelecionado.nome,
+                        quantidade: parseInt(qtd),
+                        tarifa_venda: parseFloat(tarifa),
+                        custo_energia: parseFloat(custo),
+                        horas_uso_dia: parseFloat(horas),
+                        custo_obra: parseFloat(obra),
+                        margem_lucro: parseFloat(margem),
+                        capex_total: c.capexTotal,
+                        receita_bruta_mensal: c.receitaBrutaMensal,
+                        lucro_liquido_mensal: c.lucroLiquidoMensal,
+                        payback_meses: c.paybackMeses,
+                        roi_anual: c.roiAnual,
+                        status: 'solicitado',
+                        criado_em: new Date().toISOString()
+                    }]);
+                }
+            } catch (e) { console.warn('Erro ao salvar proposta:', e); }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderWemob();
+            atualizarResultados();
+
+            document.querySelectorAll('#conteudoPrincipal input, #conteudoPrincipal select').forEach(el => {
+                el.addEventListener('change', atualizarResultados);
+                el.addEventListener('input', atualizarResultados);
+            });
+        });
+
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fecharModal(); });
+        document.getElementById('modalLead').addEventListener('click', function (e) { if (e.target === this) fecharModal(); });
+    </script>
+</body>
+
+</html>
